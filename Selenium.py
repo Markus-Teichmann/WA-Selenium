@@ -11,42 +11,21 @@ import re
 import os
 
 specials = {
-        "linebreak": lambda: ActionChains(driver).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform(), 
-        "tab": lambda: ActionChains(driver).key_down(Keys.TAB).key_up(Keys.TAB).perform(),
-        "enter": lambda: ActionChains(driver).key_down(Keys.ENTER).key_up(Keys.ENTER).perform(),
-        "Strg-A": lambda: ActionChains(driver).key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL)
-        }
-        
-JS_DROP_FILE = """
-	var target = arguments[0],
-		offsetX = arguments[1],
-		offsetY = arguments[2],
-		document = target.ownerDocument || document,
-		window = document.defaultView || window;
+    "linebreak": lambda: ActionChains(driver).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform(), 
+    "tab": lambda: ActionChains(driver).key_down(Keys.TAB).key_up(Keys.TAB).perform(),
+    "enter": lambda: ActionChains(driver).key_down(Keys.ENTER).key_up(Keys.ENTER).perform(),
+    "Strg-A": lambda: ActionChains(driver).key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL)
+}
 
-	var input = document.createElement('INPUT');
-	input.type = 'file';
-	input.onchange = function () {
-		var rect = target.getBoundingClientRect(),
-			x = rect.left + (offsetX || (rect.width >> 1)),
-			y = rect.top + (offsetY || (rect.height >> 1)),
-			dataTransfer = { files: this.files };
-
-		['dragenter', 'dragover', 'drop'].forEach(function (name) {
-			var evt = document.createEvent('MouseEvent');
-			evt.initMouseEvent(name, !0, !0, window, 0, 0, 0, x, y, !1, !1, !1, !1, 0, null);
-			evt.dataTransfer = dataTransfer;
-			target.dispatchEvent(evt);
-		});
-
-		setTimeout(function () { document.body.removeChild(input); }, 25);
-	};
-	document.body.appendChild(input);
-	return input;
-"""
+xpaths = {
+    "search_field": "//*[@tabindex='3']",
+    "message_field": "//*[@tabindex='10']",
+    "append_button": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/div/div/span",
+    "picture_upload_field": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/ul/div/div[2]/li/div/input"
+}
 
 def get_search_field():
-    return driver.find_element(By.XPATH, "//*[@tabindex='3']")
+    return driver.find_element(By.XPATH, xpaths["search_field"])
 
 def open_chat(number):
     search_field = get_search_field()
@@ -57,17 +36,17 @@ def open_chat(number):
 
 #Nur dann ausführen, wenn wir bereits einen Chat geöffnet haben.
 def get_message_field():
-    return driver.find_element(By.XPATH, "//*[@tabindex='10']")
+    return driver.find_element(By.XPATH, xpaths["message_field"])
 
 #Nur dann ausführen, wenn wir bereits einen Chat geöffnet haben.
 def open_append():
-    append_button = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/div/div/span")
+    append_button = driver.find_element(By.XPATH, xpaths["append_button"])
     append_button.click()
     time.sleep(0.1)
 
 #Nur dann ausführen, wenn wir bereits einen Chat und Anhängen geöffnet haben.
 def get_picture_upload_field():
-    upload_field = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/ul/div/div[2]/li/div/input")
+    upload_field = driver.find_element(By.XPATH, xpaths["picture_upload_field"])
     return upload_field
 
 #Nur dann aufrufen, wenn wir bereits ein Bild angehängt haben.
