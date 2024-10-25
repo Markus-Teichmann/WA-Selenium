@@ -6,6 +6,7 @@ from collections import namedtuple
 from sys import platform
 import questionary
 import time
+import csv
 import re
 import os
 
@@ -160,7 +161,7 @@ def clear_terminal():
 
 def send_message_menu(**kwargs):
     single_action_menu("Nachricht senden", {
-            "Kontakte auswählen": lambda: kwargs.update({'contacts': select_contacts("all")}),
+            "Kontakte auswählen": lambda: kwargs.update({'contacts': select_contacts_menu()}),
             "Kontakte anzeigen": lambda: display_contacts(kwargs.get('contacts')),
             "Bild auswählen": lambda: kwargs.update({'picture_path': select_picture()}),
             "Nachricht auswählen": lambda: kwargs.update({'message_path': select_message_path()}),
@@ -168,24 +169,35 @@ def send_message_menu(**kwargs):
             "Nachricht abschicken": lambda: send_message(kwargs.get('contacts'), kwargs.get('message_path'), kwargs.get('picture_path'))
         })
 
-def select_contacts(which):
+def select_contacts_menu(**kwargs):
+    single_action_menu("Gruppe auswählen", {
+            "Alle": lambda: kwargs.update({'contacts': select_contacts("all")}),
+            "Mitglieder": lambda: kwargs.update({'contacts': select_contacts("mitglied")}),
+            "Interessierte": lambda: kwargs.update({'contacts': select_contacts("interessiert")}),
+            "Lernnetz": lambda: kwargs.update({'contacts': select_contacts("lernnetz")}),
+        })
+    return kwargs.get('contacts')
+
+def select_contacts(status):
     Contact = namedtuple('Contact', ['name', 'status'])
-    contacts = {
-    			#ToDo Daten einfügen:
-				"+43123456789": Contact("Name", "Status")
-            }
+    contacts = {}
+    with open('contacts.csv') as data:
+        contact_data = csv.reader(data, delimiter=',')
+        next(contact_data)
+        for row in contact_data:
+            contacts.update({row[0]: Contact(row[1], row[2])})
     choices = []
     for number in contacts.keys():
-        if which == contacts[number].status or which == "all":
-            choices.append(contacts[number].name + " - " + number)
+        if str(status) == str(contacts[number].status) or status == "all":
+            choices.append(contacts[number].name + " - " + number + " - " + contacts[number].status)
     selection_keys = questionary.checkbox(
                 "Kontakte auswählen: ",
                 choices = choices
             ).ask()
     selection = {}
     for key in selection_keys:
-        number = key.split(" - ", 1)[1]
-        selection.update({number: contacts.get(number)})
+        number = key.split(" - ", 2)[1]
+        selection.update({number: contacts[number]})
     return selection
 
 def display_contacts(contacts):
