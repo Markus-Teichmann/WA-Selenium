@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys 
 from selenium.webdriver import ActionChains
 from collections import namedtuple 
+from sys import platform
 import questionary
 import time
 import re
@@ -114,6 +115,7 @@ def write_message(variables, message_path, message_field):
         while index < len(line_parts["emojis"]):
             message_field.send_keys(line_parts["text"][index])
             message_field.send_keys(line_parts["emojis"][index])
+            time.sleep(0.5)
             specials["tab"]()
             index += 1
         message_field.send_keys(line_parts["text"][-1])
@@ -221,7 +223,11 @@ def edit_contacts():
 
 if __name__ == "__main__":
     options = webdriver.ChromeOptions()
-    options.add_argument(r"user-data-dir=./data")
+    if platform == "linux" or platform == "linux2":
+        options.add_argument(r"user-data-dir=./data")
+    elif platform == "win32":
+        path_option = str("user-data-dir=" + os.getcwd() + "\\\\data")
+        options.add_argument(path_option)
     options.add_experimental_option("excludeSwitches",["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
     driver = webdriver.Chrome(options=options)
@@ -233,3 +239,4 @@ if __name__ == "__main__":
             "Nachricht verschicken": send_message_menu,
             "Nachricht planen": plan_message_menu,
         })
+    driver.close()
