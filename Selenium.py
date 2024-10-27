@@ -20,8 +20,10 @@ specials = {
 xpaths = {
     "search_field": "//*[@tabindex='3']",
     "message_field": "//*[@tabindex='10']",
-    "append_button": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/div/div/span",
-    "picture_upload_field": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/ul/div/div[2]/li/div/input"
+    "append_button": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span/div/div[1]/div[2]/div/div/div/span",
+    "picture_upload_field": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/ul/div/div[2]/li/div/input",
+    "document_upload_field": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span/div/div[1]/div[2]/div/span/div/ul/div/div[1]/li/div/input",
+    "picture_description_field": "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/span/div/div/div/div[2]/div/div[1]/div[3]/div/div/div[1]/div[1]/p"
 }
 
 def get_search_field():
@@ -49,9 +51,14 @@ def get_picture_upload_field():
     upload_field = driver.find_element(By.XPATH, xpaths["picture_upload_field"])
     return upload_field
 
+#Nur dann ausführen, wenn wir bereits einen Chat und Anhänge geöffnet haben.
+def get_document_upload_field():
+    upload_field = driver.find_element(By.XPATH, xpaths["document_upload_field"])
+    return upload_field
+
 #Nur dann aufrufen, wenn wir bereits ein Bild angehängt haben.
 def get_picture_description_field():
-    description_field = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/span/div/div/div/div[2]/div/div[1]/div[3]/div/div/div[2]/div[1]/div[1]")
+    description_field = driver.find_element(By.XPATH, xpaths["picture_description_field"])
     return description_field
 
 # In dieser Methode werden alle im Text mit $ gekennzeichneten
@@ -87,7 +94,7 @@ def replace_emojis(line):
 # das message_field geschickt und wie in der Nachricht spezifiziert
 # formatiert.
 def write_message(variables, message_path, message_field):
-    message = open(message_path)
+    message = open(message_path, encoding="utf-8")
     for line in message:
         line = replace_variables(line, variables)
         line_parts = replace_emojis(line)
@@ -95,16 +102,18 @@ def write_message(variables, message_path, message_field):
         while index < len(line_parts["emojis"]):
             message_field.send_keys(line_parts["text"][index])
             message_field.send_keys(line_parts["emojis"][index])
-            time.sleep(0.5)
+            time.sleep(1)
             specials["tab"]()
             index += 1
         message_field.send_keys(line_parts["text"][-1])
         specials["linebreak"]()
+        time.sleep(0.5)
 
 # Diese Methode verschickt die angegebene Nachricht an jeden in
 # contacts hinterlegten Kontakt.
-def send_message(contacts, message_path=None, picture_path=None):
+def send_message(contacts, message_path=None, picture_path=None, document_path=None):
     for number in contacts.keys():
+        print(contacts[number].name + " - " + number)
         variables = { "$name": contacts[number].name, "$number": number }
         open_chat(number)
         message_field = get_message_field()
@@ -115,11 +124,19 @@ def send_message(contacts, message_path=None, picture_path=None):
             picture_upload.send_keys(picture_path)
             time.sleep(20)
             message_field = get_picture_description_field()
+        if document_path is not None:
+            open_append()
+            document_upload = get_document_upload_field()
+            document_path = os.path.abspath(document_path)
+            document_upload.send_keys(document_path)
+            time.sleep(5)
+            message_field = get_picture_description_field()
         if message_path is not None:
             write_message(variables, message_path, message_field)
         time.sleep(2)
         specials["enter"]()
-        time.sleep(2)
+        time.sleep(5)
+        print(":-)")
 
 def single_action_menu(title, functions):
     functions.update({"exit": lambda: print("schließe " + title)})
@@ -143,9 +160,10 @@ def send_message_menu(**kwargs):
             "Kontakte auswählen": lambda: kwargs.update({'contacts': select_contacts_menu()}),
             "Kontakte anzeigen": lambda: display_contacts(kwargs.get('contacts')),
             "Bild auswählen": lambda: kwargs.update({'picture_path': select_picture()}),
+            "Dokument auswählen": lambda: kwargs.update({'document_path': select_document()}),
             "Nachricht auswählen": lambda: kwargs.update({'message_path': select_message_path()}),
             "Nachricht anzeigen": lambda: display_message(kwargs.get('message_path')),
-            "Nachricht abschicken": lambda: send_message(kwargs.get('contacts'), kwargs.get('message_path'), kwargs.get('picture_path'))
+            "Nachricht abschicken": lambda: send_message(kwargs.get('contacts'), kwargs.get('message_path'), kwargs.get('picture_path'), kwargs.get('document_path'))
         })
 
 def select_contacts_menu(**kwargs):
@@ -188,6 +206,9 @@ def display_contacts(contacts):
 def select_picture():
     return questionary.path("Pfad: ").ask()
 
+def select_document():
+    return questionary.path("Pfad: ").ask()
+
 def select_message_path(**kwargs):
     single_action_menu("Nachricht angeben", {
             "Neue Nachricht schreiben": lambda: print("ToDo"),
@@ -197,7 +218,7 @@ def select_message_path(**kwargs):
 
 def display_message(message_path):
     if message_path is not None:
-        message = open(message_path)
+        message = open(message_path, encoding="utf-8")
         display(message.read())
 
 def display(text):
