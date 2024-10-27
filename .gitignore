@@ -1,4 +1,4 @@
 *.log
-data/*
-*.csv
+session-data/*
+user-data/*
 Sharetexte/*

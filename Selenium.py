@@ -150,9 +150,9 @@ def single_action_menu(title, functions):
         functions[user_input]()
 
 def clear_terminal():
-    if os.name == 'nt':
+    if platform == "win32":
         os.system('cls')
-    else:
+    elif platform == "linux" or platform == "linux2":
         os.system('clear')
 
 def send_message_menu(**kwargs):
@@ -178,7 +178,10 @@ def select_contacts_menu(**kwargs):
 def select_contacts(status):
     Contact = namedtuple('Contact', ['name', 'status'])
     contacts = {}
-    with open('contacts.csv') as data:
+    path = "./user-data/contacts.csv"
+    if platform == "win32":
+        path = os.getcwd() + "\\\\user-data\\\\contacts.csv"
+    with open(path) as data:
         contact_data = csv.reader(data, delimiter=',')
         next(contact_data)
         for row in contact_data:
@@ -236,9 +239,9 @@ def edit_contacts():
 if __name__ == "__main__":
     options = webdriver.ChromeOptions()
     if platform == "linux" or platform == "linux2":
-        options.add_argument(r"user-data-dir=./data")
+        options.add_argument(r"user-data-dir=./session-data/")
     elif platform == "win32":
-        path_option = str("user-data-dir=" + os.getcwd() + "\\\\data")
+        path_option = str("user-data-dir=" + os.getcwd() + "\\\\session-data")
         options.add_argument(path_option)
     options.add_experimental_option("excludeSwitches",["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
