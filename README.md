@@ -1,5 +1,5 @@
-##1. Installation ---
-  ###1.1 Python
+## 1. Installation ---
+  ### 1.1 Python
       Ein Tutorial zur installation von Python findet ihr hier: https://www.youtube.com/watch?v=bCY4D9n3Pew ---
       (Wichtig ist aber wirklich nur, dass ihr wie in Minute 2:37 gezeigt wird den Hacken entsprechend setzt.) ---
       Ladet euch die aktuelle Version von Python runter: https://www.python.org
