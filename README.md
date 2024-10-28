@@ -22,9 +22,8 @@
   Jetzt sind alle notwendingen Bedingugen abgeschlossen um WA-Selenium zu nutzen.
   ### 1.3 WA - Selenium
   Begebt euch mit dem Explorer in einen Beliebigen Ordner, öffnet dort eine CMD und führt folgenden Befehl aus: <br>
-  `git clone `
-    <https://github.com/Markus-Teichmann/WA-Selenium/archive/refs/heads/main.zip> <br>
-  Entpackt die Datei irgendwo auf eurem Computer. Dann fragt ihr bei euren Vorständen nach dem User-Data Ordner. Sobald ihr den habt plaziert ihr ihn unter den WA-Selenium Ordner, sodass sich folgende Ordnerstruktur ergibt: <br>
+  `git clone https://github.com/Markus-Teichmann/WA-Selenium.git`
+  Dann fragt ihr bei euren Vorständen nach dem User-Data Ordner. Sobald ihr den habt plaziert ihr ihn in WA-Selenium Ordner, sodass sich folgende Ordnerstruktur ergibt: <br>
   > WA-Selenium
   >> session-data/ <br>
   >> src/ <br>
