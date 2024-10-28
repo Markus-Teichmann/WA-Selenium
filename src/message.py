@@ -1,3 +1,4 @@
+from logging import exception
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
 from src.web_interface import WebInterface
@@ -65,34 +66,66 @@ def write_message(variables, message_path, message_field):
 # Diese Methode verschickt die angegebene Nachricht an jeden in
 # contacts hinterlegten Kontakt.
 def send_message(contacts, message_path=None, picture_path=None, document_path=None):
-    for number in contacts.keys():
-        print(contacts[number].name + " - " + number)
-        variables = { "$name": contacts[number].name, "$number": number }
-        WebInterface.open_chat(number)
-        message_field = WebInterface.get_message_field()
-        if picture_path is not None:
-            WebInterface.open_append()
-            picture_upload = WebInterface.get_picture_upload_field()
-            picture_path = os.path.abspath(picture_path)
-            picture_upload.send_keys(picture_path)
-            time.sleep(20)
-            message_field = WebInterface.get_description_field()
-        if document_path is not None:
-            WebInterface.open_append()
-            document_upload = WebInterface.get_document_upload_field()
-            document_path = os.path.abspath(document_path)
-            document_upload.send_keys(document_path)
-            time.sleep(5)
-            message_field = WebInterface.get_description_field()
-        if message_path is not None:
-            write_message(variables, message_path, message_field)
-        time.sleep(2)
-        specials["enter"]()
-        time.sleep(5)
-        print("\U0001F44D")
+    if contacts is not None:
+        for number in contacts.keys():
+            print(contacts[number].name + " - " + number)
+            variables = { "$name": contacts[number].name, "$number": number }
+            try:
+                WebInterface.open_chat(number)
+                message_field = WebInterface.get_message_field()
+            except Exception as error:
+                print(error)
+                utils.display("Informiere eine:n Entwickler:In")
+            else:
+                if picture_path is not None or document_path is not None:
+                    try:
+                        WebInterface.open_append()
+                    except Exception as error:
+                        print(error)
+                        utils.display("Informiere eine:n Entwickler:In")
+                    else:
+                        upload_field = None
+                        if picture_path is not None:
+                            try:
+                                upload_field = WebInterface.get_picture_upload_field()
+                            except Exception as error:
+                                print(error)
+                                utils.display("Informiere eine:n Entwickler:In")
+                            path = os.path.abspath(picture_path)
+                        else:
+                            try:
+                                upload_field = WebInterface.get_document_upload_field()
+                            except Exception as error:
+                                print(error)
+                                utils.display("Informiere eine:n Entwickler:In")
+                            path = os.path.abspath(document_path)
+                        if not os.path.isfile(path):
+                            utils.display("Die angegebene (Bild)-Datei konnte nicht gefunden werden.")
+                        elif upload_field is not None:
+                            upload_field.send_keys(path)
+                            time.sleep(20)
+                            try:
+                                message_field = WebInterface.get_description_field()
+                            except Exception as error:
+                                print(error)
+                                utils.display("Informiere eine:n Entwickler:In")
+                if message_path is not None:
+                    try:
+                        write_message(variables, message_path, message_field)
+                    except FileNotFoundError:
+                        utils.display("Die angegebene Nachricht konnte nicht gefunden werden.")
+                time.sleep(2)
+                specials["enter"]()
+                time.sleep(5)
+                print("\U0001F44D")
+    else:
+        utils.display("Bitte wähle mindestens einen Kontakt aus!")
 
 def display_message(message_path):
     if message_path is not None:
-        message = open(message_path, encoding="utf-8")
-        utils.display(message.read())
+        try:
+            message = open(message_path, encoding="utf-8")
+            utils.display(message.read())
+        except FileNotFoundError:
+            utils.display("Die angegebene Datei konnte nicht gefunden werden. Verwende bei der Auswahl die Tab und Pfeiltasten.")
 

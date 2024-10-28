@@ -1,9 +1,7 @@
 from src.web_interface import WebInterface
 from selenium import webdriver
 from sys import platform
-from src import utils
-import questionary
-import time
+from src import menu
 import os
 
 if __name__ == "__main__":
@@ -20,8 +18,8 @@ if __name__ == "__main__":
     WebInterface.driver.maximize_window()
     WebInterface.driver.get('https://web.whatsapp.com')
 
-    utils.single_action_menu("Hauptmenü", {
-            "Nachricht verschicken": utils.send_message_menu,
-            "Nachricht planen": utils.plan_message_menu,
+    menu.single_action_menu("Hauptmenü", {
+            "Nachricht verschicken": menu.send_message_menu,
+            "Nachricht planen": menu.plan_message_menu,
         })
     WebInterface.driver.close()
