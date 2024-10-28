@@ -10,7 +10,7 @@ def select_contacts(status):
     contacts = {}
     path = "../user-data/contacts.csv"
     if platform == "win32":
-        path = os.getcwd() + "\\\\user-data\\\\contacts.csv"
+        path = os.getcwd() + "\\user-data\\contacts.csv"
     with open(path) as data:
         contact_data = csv.reader(data, delimiter=',')
         next(contact_data)
