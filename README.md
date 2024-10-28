@@ -20,14 +20,14 @@
     <https://github.com/Markus-Teichmann/WA-Selenium/archive/refs/heads/main.zip> <br>
   Entpackt die Datei irgendwo auf eurem Computer. Dann fragt ihr bei passender Stelle nach den User-Data Ordner. Sobald ihr den habt plaziert ihr ihn unter den src Ordner, sodass sich folgende Ordnerstruktur ergibt: <br>
   > WA-Selenium
-      >> session-data/
-      >> src/
-      >> user-data/
-      >> .gitignore
-      >> chromedriver.exe
-      >> emojis
-      >> README.md
-      >> Selenium.py
+  >> session-data/ <br>
+  >> src/ <br>
+  >> user-data/ <br>
+  >> .gitignore <br>
+  >> chromedriver.exe <br>
+  >> emojis <br>
+  >> README.md <br>
+  >> Selenium.py
 
 ## 2. WA-Selenium nutzen:
    Öffnet in dem WA-Selenium Ordner eine cmd und führt den Befehl:
