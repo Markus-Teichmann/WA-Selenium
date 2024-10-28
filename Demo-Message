@@ -1,0 +1,21 @@
+Hey $name \raised fist\
+
+diese Nachricht soll die Fähigkeiten dieses Skripts demonstrieren.
+
+Der Name des ausgewählten Kontakts kann mit $name ersetzt werden. So lassen sich personalisierte Nachrichten auch an mehrere Kontakte verschicken.
+
+Auflistungen beginnen in WhatsApp mit einem Bindestrich:
+- Das
+hier
+ist
+eine
+Auflistung
+
+Sobald eine Leerzeile dazwischen kommt, wird die Auflistung unterbrochen.
+
+Emojis können mithilfe der mit einem Doppelpunkt beginnenden Abkürzungen eingebunden werden. Verwende in deinen Nachrichten daher die Noation Backslash Emoji Backslash. Einige Beispiele:
+\relaxed\
+\index pointing up\
+\cloud with rain\
+
+Weitere Beispiele findest du in der Datei emojis.
