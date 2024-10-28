@@ -1,6 +1,9 @@
 ## 1. Installation
+  ### 1.0 Git
+  Den Installer zur installation Git findest du hier: <br>
+    <https://git-scm.com/downloads/win>
   ### 1.1 Python
-  Ein Tutorial zur installation von Python findet ihr hier: <br>
+  Ein Tutorial zur installation von Python findest du hier: <br>
       <https://www.youtube.com/watch?v=bCY4D9n3Pew> <br>
   (Wichtig ist aber wirklich nur, dass ihr wie in Minute 2:37 gezeigt wird den Hacken entsprechend setzt.) <br>
   Ladet euch die aktuelle Version von Python runter: <br>
