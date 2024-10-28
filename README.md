@@ -8,7 +8,9 @@
   Für Windows ist das diese hier: <br>
       <https://www.python.org/ftp/python/3.13.0/python-3.13.0-amd64.exe> <br>
   Klick euch dann durch den Installer und setzt umbedingt das Häckchen bei "Python zum Pfad hinzufügen" <br>
-  Öffnet eine CMD (z.B. WIN + r drücken und dann cmd eingeben) und führt dort: "python --version" aus. Erscheint keine Fehlermeldung, so habt ihr Python erfolgreich installiert.
+  Öffnet eine CMD (z.B. WIN + r drücken und dann cmd eingeben) und führt dort: <br> 
+      `python --version` <br>
+  aus. Erscheint keine Fehlermeldung, so habt ihr Python erfolgreich installiert.
   ### 1.2 Librarys
   Nachdem ihr Python installiert habt müssen wir noch einige Abhängigkeiten installieren. Öffne dazu eine CMD und gebe ein: <br>
     `pip install selenium` <br>
