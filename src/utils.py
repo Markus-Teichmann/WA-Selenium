@@ -1,8 +1,8 @@
 from sys import platform
+from src import contacts
+from src import message
 import questionary
 import os
-import contacts
-import message
 
 
 def clear_terminal():
@@ -26,9 +26,11 @@ def send_message_menu(**kwargs):
     single_action_menu("Nachricht senden", {
             "Kontakte auswählen": lambda: kwargs.update({'contacts': select_contacts_menu()}),
             "Kontakte anzeigen": lambda: contacts.display_contacts(kwargs.get('contacts')),
-            "Bild auswählen": lambda: kwargs.update({'picture_path': select_picture()}),
-            "Dokument auswählen": lambda: kwargs.update({'document_path': select_document()}),
-            "Nachricht auswählen": lambda: kwargs.update({'message_path': select_message_path()}),
+            "Bild auswählen": lambda: kwargs.update({'picture_path': questionary.path("Pfad: ").ask()}),
+            "Bild-Pfad anzeigen:": lambda: display(kwargs.get('picture_path')),
+            "Dokument auswählen": lambda: kwargs.update({'document_path': questionary.path("Pfad: ").ask()}),
+            "Dokument-Pfad anzeigen:": lambda: display(kwargs.get('document_path')),
+            "Nachricht auswählen": lambda: kwargs.update({'message_path': questionary.path("Pfad: ").ask()}),
             "Nachricht anzeigen": lambda: message.display_message(kwargs.get('message_path')),
             "Nachricht abschicken": lambda: message.send_message(kwargs.get('contacts'), kwargs.get('message_path'), kwargs.get('picture_path'), kwargs.get('document_path'))
         })
@@ -41,19 +43,6 @@ def select_contacts_menu(**kwargs):
             "Lernnetz": lambda: kwargs.update({'contacts': contacts.select_contacts("lernnetz")}),
         })
     return kwargs.get('contacts')
-
-def select_picture():
-    return questionary.path("Pfad: ").ask()
-
-def select_document():
-    return questionary.path("Pfad: ").ask()
-
-def select_message_path(**kwargs):
-    single_action_menu("Nachricht angeben", {
-            "Neue Nachricht schreiben": lambda: print("ToDo"),
-            "Pfad zur Nachricht angeben": lambda: kwargs.update({'message_path': questionary.path("Pfad: ").ask()})
-        })
-    return kwargs.get('message_path')
 
 def display(text):
     user_input = None

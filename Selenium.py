@@ -1,7 +1,9 @@
-import utils
-from web_interface import WebInterface
+from src.web_interface import WebInterface
 from selenium import webdriver
 from sys import platform
+from src import utils
+import questionary
+import time
 import os
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ xpaths = {
         "append_button": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span/div/div[1]/div[2]/div/div/div/span",
         "picture_upload_field": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/ul/div/div[2]/li/div/input",
         "document_upload_field": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span/div/div[1]/div[2]/div/span/div/ul/div/div[1]/li/div/input",
-        "picture_description_field": "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/span/div/div/div/div[2]/div/div[1]/div[3]/div/div/div[1]/div[1]/p"
+        "description_field": "/html/body/div[1]/div/div/div[2]/div[2]/div[2]/span/div/div/div/div[2]/div/div[1]/div[3]/div/div/div[1]/div[1]/p"
     }
 
 class WebInterface:
@@ -55,7 +55,7 @@ class WebInterface:
 
     #Nur dann aufrufen, wenn wir bereits ein Bild angehängt haben.
     @staticmethod
-    def get_picture_description_field():
-        description_field = WebInterface.driver.find_element(By.XPATH, xpaths["picture_description_field"])
+    def get_description_field():
+        description_field = WebInterface.driver.find_element(By.XPATH, xpaths["description_field"])
         return description_field
 

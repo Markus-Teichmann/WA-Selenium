@@ -1,11 +1,11 @@
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
+from src.web_interface import WebInterface
+from src import utils
 import time
 import re
 import os
 
-import utils
-from web_interface import WebInterface
 
 specials = {
     "linebreak": lambda: ActionChains(WebInterface.driver).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform(),
@@ -76,14 +76,14 @@ def send_message(contacts, message_path=None, picture_path=None, document_path=N
             picture_path = os.path.abspath(picture_path)
             picture_upload.send_keys(picture_path)
             time.sleep(20)
-            message_field = WebInterface.get_picture_description_field()
+            message_field = WebInterface.get_description_field()
         if document_path is not None:
             WebInterface.open_append()
             document_upload = WebInterface.get_document_upload_field()
             document_path = os.path.abspath(document_path)
             document_upload.send_keys(document_path)
             time.sleep(5)
-            message_field = WebInterface.get_picture_description_field()
+            message_field = WebInterface.get_description_field()
         if message_path is not None:
             write_message(variables, message_path, message_field)
         time.sleep(2)

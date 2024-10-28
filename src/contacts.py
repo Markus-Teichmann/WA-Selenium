@@ -1,14 +1,14 @@
 from collections import namedtuple
 from sys import platform
+from src import utils
 import questionary
-import utils
 import csv
 import os
 
 def select_contacts(status):
     Contact = namedtuple('Contact', ['name', 'status'])
     contacts = {}
-    path = "./user-data/contacts.csv"
+    path = "../user-data/contacts.csv"
     if platform == "win32":
         path = os.getcwd() + "\\\\user-data\\\\contacts.csv"
     with open(path) as data:
