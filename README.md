@@ -10,15 +10,15 @@
   Klick euch dann durch den Installer und setzt umbedingt das Häckchen bei "Python zum Pfad hinzufügen" <br>
   Öffnet eine CMD (z.B. WIN + r drücken und dann cmd eingeben) und führt dort: "python --version" aus. Erscheint keine Fehlermeldung, so habt ihr Python erfolgreich installiert.
   ### 1.2 Librarys
-  Nachdem ihr Python installiert habt müssen wir noch einige Abhängigkeiten installieren. Öffne dazu eine CMD und gebe ein:
+  Nachdem ihr Python installiert habt müssen wir noch einige Abhängigkeiten installieren. Öffne dazu eine CMD und gebe ein: <br>
     `pip install selenium`
-  und
+  und <br>
     `pip install questionary`
   Jetzt sind alle notwendingen Bedingugen abgeschlossen um WA-Selenium zu nutzen.
   ### 1.3 WA - Selenium
-      Ladet euch WA-Selenium herunter:<br>
-        <https://github.com/Markus-Teichmann/WA-Selenium/archive/refs/heads/main.zip> <br>
-      Entpackt die Datei irgendwo auf eurem Computer. Dann fragt ihr bei passender Stelle nach den User-Data Ordner. Sobald ihr den habt plaziert ihr ihn unter den src Ordner, sodass sich folgende Ordnerstruktur ergibt: <br>
+  Ladet euch WA-Selenium herunter:<br>
+    <https://github.com/Markus-Teichmann/WA-Selenium/archive/refs/heads/main.zip> <br>
+  Entpackt die Datei irgendwo auf eurem Computer. Dann fragt ihr bei passender Stelle nach den User-Data Ordner. Sobald ihr den habt plaziert ihr ihn unter den src Ordner, sodass sich folgende Ordnerstruktur ergibt: <br>
       > WA-Selenium
       >> session-data/
       >> src/
