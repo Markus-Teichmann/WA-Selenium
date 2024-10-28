@@ -1,4 +1,3 @@
-from logging import exception
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
 from src.web_interface import WebInterface
