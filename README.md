@@ -20,17 +20,16 @@
     <https://github.com/Markus-Teichmann/WA-Selenium/archive/refs/heads/main.zip> <br>
   Entpackt die Datei irgendwo auf eurem Computer. Dann fragt ihr bei passender Stelle nach den User-Data Ordner. Sobald ihr den habt plaziert ihr ihn unter den src Ordner, sodass sich folgende Ordnerstruktur ergibt: <br>
   > WA-Selenium
-  >> session-data/
-  >> src/
-  >> user-data/
-  >> .gitignore
-  >> chromedriver.exe
-  >> emojis
-  >> README.md
-  >> Selenium.py
+      >> session-data/
+      >> src/
+      >> user-data/
+      >> .gitignore
+      >> chromedriver.exe
+      >> emojis
+      >> README.md
+      >> Selenium.py
 
 ## 2. WA-Selenium nutzen:
    Öffnet in dem WA-Selenium Ordner eine cmd und führt den Befehl:
       python Selenium.py
-   aus. Erscheint hier keine Fehlermeldung, so habt ihr die Installation erfolgreich       
-   abgeschlossen.
+   aus. Erscheint hier keine Fehlermeldung, so habt ihr die Installation erfolgreich abgeschlossen.
