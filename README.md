@@ -1,7 +1,7 @@
 ## 1. Installation
   ### 1.1 Python
   Ein Tutorial zur installation von Python findet ihr hier: <br>
-      <https://www.youtube.com/watch?v=bCY4D9n3Pew>
+      <https://www.youtube.com/watch?v=bCY4D9n3Pew> <br>
   (Wichtig ist aber wirklich nur, dass ihr wie in Minute 2:37 gezeigt wird den Hacken entsprechend setzt.) <br>
   Ladet euch die aktuelle Version von Python runter: <br>
       <https://www.python.org> <br>
@@ -16,16 +16,18 @@
     `pip install questionary`
   Jetzt sind alle notwendingen Bedingugen abgeschlossen um WA-Selenium zu nutzen.
   ### 1.3 WA - Selenium
-      Ladet euch WA-Selenium herunter: <https://github.com/Markus-Teichmann/WA-Selenium/archive/refs/heads/main.zip>
-      Entpackt die Datei irgendwo auf eurem Computer. Dann fragt ihr bei passender Stelle nach den User-Data Ordner. Sobald ihr den habt plaziert ihr ihn unter den src Ordner, sodass sich folgende Ordnerstruktur ergibt:
-      WA-Selenium/session-data/
-      WA-Selenium/src/
-      WA-Selenium/user-data/
-      WA-Selenium/.gitignore
-      WA-Selenium/chromedriver
-      WA-Selenium/emojis
-      WA-Selenium/README
-      WA-Selenium/Selenium
+      Ladet euch WA-Selenium herunter:<br>
+        <https://github.com/Markus-Teichmann/WA-Selenium/archive/refs/heads/main.zip> <br>
+      Entpackt die Datei irgendwo auf eurem Computer. Dann fragt ihr bei passender Stelle nach den User-Data Ordner. Sobald ihr den habt plaziert ihr ihn unter den src Ordner, sodass sich folgende Ordnerstruktur ergibt: <br>
+      > WA-Selenium
+      >> session-data/
+      >> src/
+      >> user-data/
+      >> .gitignore
+      >> chromedriver.exe
+      >> emojis
+      >> README.md
+      >> Selenium.py
 
 ## 2. WA-Selenium nutzen:
    Öffnet in dem WA-Selenium Ordner eine cmd und führt den Befehl:
