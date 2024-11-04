@@ -22,8 +22,12 @@ def select_contacts(status):
     else:
         choices = []
         for number in contacts.keys():
-            if str(status) == str(contacts[number].status) or status == "all":
+            if (str(status) == str(contacts[number].status) or
+                    status == "all" or
+                    (str(contacts[number].status) not in ["interessiert", "mitglied", "lernnetz"] and
+                    str(status) not in ["interessiert", "mitglied", "lernnetz"])):
                 choices.append(contacts[number].name + " - " + number + " - " + contacts[number].status)
+
         try:
             selection_keys = questionary.checkbox(
                         "Kontakte auswählen: ",

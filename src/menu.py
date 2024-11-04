@@ -33,6 +33,7 @@ def select_contacts_menu(**kwargs):
             "Mitglieder": lambda: kwargs.update({'contacts': contacts.select_contacts("mitglied")}),
             "Interessierte": lambda: kwargs.update({'contacts': contacts.select_contacts("interessiert")}),
             "Lernnetz": lambda: kwargs.update({'contacts': contacts.select_contacts("lernnetz")}),
+            "Sonstige": lambda: kwargs.update({'contacts': contacts.select_contacts("sonstige")})
         })
     return kwargs.get('contacts')
 
