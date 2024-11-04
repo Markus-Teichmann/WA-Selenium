@@ -1,6 +1,9 @@
 ## 1. Installation
+  ### 1.0 Git
+  Den Installer zur installation Git findest du hier: <br>
+    <https://git-scm.com/downloads/win>
   ### 1.1 Python
-  Ein Tutorial zur installation von Python findet ihr hier: <br>
+  Ein Tutorial zur installation von Python findest du hier: <br>
       <https://www.youtube.com/watch?v=bCY4D9n3Pew> <br>
   (Wichtig ist aber wirklich nur, dass ihr wie in Minute 2:37 gezeigt wird den Hacken entsprechend setzt.) <br>
   Ladet euch die aktuelle Version von Python runter: <br>
@@ -18,9 +21,9 @@
     `pip install questionary` <br>
   Jetzt sind alle notwendingen Bedingugen abgeschlossen um WA-Selenium zu nutzen.
   ### 1.3 WA - Selenium
-  Ladet euch WA-Selenium herunter:<br>
-    <https://github.com/Markus-Teichmann/WA-Selenium/archive/refs/heads/main.zip> <br>
-  Entpackt die Datei irgendwo auf eurem Computer. Dann fragt ihr bei euren Vorständen nach dem User-Data Ordner. Sobald ihr den habt plaziert ihr ihn unter den WA-Selenium Ordner, sodass sich folgende Ordnerstruktur ergibt: <br>
+  Begebt euch mit dem Explorer in einen Beliebigen Ordner, öffnet dort eine CMD und führt folgenden Befehl aus: <br>
+  `git clone https://github.com/Markus-Teichmann/WA-Selenium.git` <br>
+  Dann fragt ihr bei euren Vorständen nach dem User-Data Ordner. Sobald ihr den habt plaziert ihr ihn in WA-Selenium Ordner, sodass sich folgende Ordnerstruktur ergibt: <br>
   > WA-Selenium
   >> session-data/ <br>
   >> src/ <br>
