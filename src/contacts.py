@@ -5,7 +5,7 @@ import questionary
 import csv
 import os
 
-def select_contacts(status):
+def select_contacts(csv_path="../user-data/contacts.csv", status):
     Contact = namedtuple('Contact', ['name', 'status'])
     contacts = {}
     path = "../user-data/contacts.csv"

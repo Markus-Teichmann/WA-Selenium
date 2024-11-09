@@ -16,7 +16,9 @@ def single_action_menu(title, functions):
 
 def send_message_menu(**kwargs):
     single_action_menu("Nachricht senden", {
-            "Kontakte auswählen": lambda: kwargs.update({'contacts': select_contacts_menu()}),
+            "CSV - Datei auswählen": lambda: kwargs.update({'csv_path': questionary.path("Pfad: ").ask()}),
+            "CSV-Pfad anzeigen:": lambda: utils.display(kwargs.get('csv_path')),
+            "Kontakte auswählen": lambda: kwargs.update({'contacts': select_contacts_menu(kwargs.get('csv_path'))}),
             "Kontakte anzeigen": lambda: contacts.display_contacts(kwargs.get('contacts')),
             "Bild auswählen": lambda: kwargs.update({'picture_path': questionary.path("Pfad: ").ask()}),
             "Bild-Pfad anzeigen:": lambda: utils.display(kwargs.get('picture_path')),
