@@ -29,13 +29,13 @@ def send_message_menu(**kwargs):
             "Nachricht abschicken": lambda: message.send_message(kwargs.get('contacts'), kwargs.get('message_path'), kwargs.get('picture_path'), kwargs.get('document_path'))
         })
 
-def select_contacts_menu(**kwargs):
+def select_contacts_menu(csv_path, **kwargs):
     single_action_menu("Gruppe auswählen", {
-            "Alle": lambda: kwargs.update({'contacts': contacts.select_contacts("all")}),
-            "Mitglieder": lambda: kwargs.update({'contacts': contacts.select_contacts("mitglied")}),
-            "Interessierte": lambda: kwargs.update({'contacts': contacts.select_contacts("interessiert")}),
-            "Lernnetz": lambda: kwargs.update({'contacts': contacts.select_contacts("lernnetz")}),
-            "Sonstige": lambda: kwargs.update({'contacts': contacts.select_contacts("sonstige")})
+            "Alle": lambda: kwargs.update({'contacts': contacts.select_contacts("all", csv_path)}),
+            "Mitglieder": lambda: kwargs.update({'contacts': contacts.select_contacts("mitglied", csv_path)}),
+            "Interessierte": lambda: kwargs.update({'contacts': contacts.select_contacts("interessiert", csv_path)}),
+            "Lernnetz": lambda: kwargs.update({'contacts': contacts.select_contacts("lernnetz", csv_path)}),
+            "Sonstige": lambda: kwargs.update({'contacts': contacts.select_contacts("sonstige", csv_path)})
         })
     return kwargs.get('contacts')
 

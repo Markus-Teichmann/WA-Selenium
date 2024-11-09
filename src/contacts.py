@@ -1,22 +1,32 @@
 from collections import namedtuple
 from sys import platform
+
+from selenium.webdriver.common.devtools.v85.indexed_db import ObjectStore
+
 from src import utils
 import questionary
 import csv
 import os
 
-def select_contacts(csv_path="../user-data/contacts.csv", status):
-    Contact = namedtuple('Contact', ['name', 'status'])
+def select_contacts(status, csv_path="../user-data/contacts.csv"):
+    Contact = namedtuple('Contact', [
+        'first_name',
+        'last_name',
+        'email',
+        'status',
+        'sex'
+    ])
     contacts = {}
-    path = "../user-data/contacts.csv"
     if platform == "win32":
-        path = os.getcwd() + "\\user-data\\contacts.csv"
+        csv_path = os.getcwd() + "\\user-data\\contacts.csv"
     try:
-        with open(path) as data:
+        with open(csv_path) as data:
             contact_data = csv.reader(data, delimiter=',')
             next(contact_data)
             for row in contact_data:
-                contacts.update({row[0]: Contact(row[1], row[2])})
+                number = utils.assign_phone_number(row[4], row[5])
+                contacts.update({number: Contact(row[1], row[2], row[3], utils.assign_state(row[6]), row[7])})
+                # row[0] ist die Nationbuilder ID und die brauchen wir hier sicher nicht.
     except FileNotFoundError:
         utils.display("Die contacts.csv Datei konnte nicht gefunden werden. Frage nach dem user-data Ordner.")
     else:
@@ -24,9 +34,9 @@ def select_contacts(csv_path="../user-data/contacts.csv", status):
         for number in contacts.keys():
             if (str(status) == str(contacts[number].status) or
                     status == "all" or
-                    (str(contacts[number].status) not in ["interessiert", "mitglied", "lernnetz"] and
+                    (contacts[number].status not in ["interessiert", "mitglied", "lernnetz"] and
                     str(status) not in ["interessiert", "mitglied", "lernnetz"])):
-                choices.append(contacts[number].name + " - " + number + " - " + contacts[number].status)
+                choices.append(contacts[number].first_name + " - " + number + " - " + contacts[number].status)
 
         try:
             selection_keys = questionary.checkbox(
