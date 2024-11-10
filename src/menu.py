@@ -30,6 +30,7 @@ def send_message_menu(**kwargs):
         })
 
 def select_contacts_menu(csv_path, **kwargs):
+    print(csv_path)
     single_action_menu("Gruppe auswählen", {
             "Alle": lambda: kwargs.update({'contacts': contacts.select_contacts("all", csv_path)}),
             "Mitglieder": lambda: kwargs.update({'contacts': contacts.select_contacts("mitglied", csv_path)}),

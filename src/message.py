@@ -67,8 +67,8 @@ def write_message(variables, message_path, message_field):
 def send_message(contacts, message_path=None, picture_path=None, document_path=None):
     if contacts is not None:
         for number in contacts.keys():
-            print(contacts[number].name + " - " + number)
-            variables = { "$name": contacts[number].name, "$number": number }
+            print(contacts[number].first_name + " - " + number)
+            variables = { "$name": contacts[number].first_name, "$number": number }
             try:
                 WebInterface.open_chat(number)
                 message_field = WebInterface.get_message_field()
