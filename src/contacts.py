@@ -28,12 +28,23 @@ def select_contacts(status, csv_path="../user-data/contacts.csv"):
             contact_data = csv.reader(data, delimiter=',', quotechar='"')
             next(contact_data)
             for row in contact_data:
-                number = utils.assign_phone_number(row[4], row[5])
-                tags = utils.assign_tag_list(row[6])
-                state = utils.assign_state(tags)
-                sex = utils.assign_sex(row[7])
-                first_name = str(row[1]).split(" ")[0]
-                contacts.update({number: Contact(first_name, row[2], row[3], state, tags, sex)})
+                number = utils.assign_phone_number(row[32], row[34])
+                tags = utils.assign_tag_list(row[164])
+                JLNichtkontaktieren = "JL Nicht Kontaktieren" in tags
+                JLausgetreten = "JL ausgetreten" in tags
+                is_mobile_bad = str(row[36]) == "true"
+                mobile_opt_in = str(row[35]) == "true"
+                if (not JLNichtkontaktieren
+                    and not JLausgetreten
+                    and not is_mobile_bad
+                    and mobile_opt_in
+                    and number is not None):
+                    state = utils.assign_state(tags)
+                    sex = utils.assign_sex(row[169])
+                    first_name = str(row[15]).split(" ")[0]
+                    last_name = str(row[17])
+                    email = str(row[21])
+                    contacts.update({number: Contact(first_name, last_name, email, state, tags, sex)})
                 # row[0] ist die Nationbuilder ID und die brauchen wir hier sicher nicht.
     except FileNotFoundError:
         utils.display("Die contacts.csv Datei konnte nicht gefunden werden. Exportiere eine .csv Datei aus dem Nationbuilder")

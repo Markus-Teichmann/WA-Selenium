@@ -70,7 +70,6 @@ def assign_number(call_number):
     for char in call_number:
         if char.isdigit():
             number += char
-
     patterns = ["0043[0-9]*", "0[0-9]*", "43[0-9]*", "[^0][0-9]*"]
     i = 0
     while i < len(patterns):
