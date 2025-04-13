@@ -1,5 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
+from selenium.webdriver.support.expected_conditions import none_of
+
 from src.web_interface import WebInterface
 from src import utils
 import time
@@ -102,12 +104,19 @@ def send_message(contacts, message_path=None, picture_path=None, document_path=N
                             utils.display("Die angegebene (Bild)-Datei konnte nicht gefunden werden.")
                         elif upload_field is not None:
                             upload_field.send_keys(path)
-                            time.sleep(20)
+                            time.sleep(10)
                             try:
                                 message_field = WebInterface.get_description_field()
                             except Exception as error:
                                 print(error)
                                 utils.display("Informiere eine:n Entwickler:In")
+                                user_input = None
+                                while user_input not in ["c", "b"]:
+                                    user_input = input("Choose c, to continue or b to break:")
+                                if user_input == "c":
+                                    continue
+                                elif user_input == "b":
+                                    break
                 if message_path is not None:
                     try:
                         write_message(variables, message_path, message_field)

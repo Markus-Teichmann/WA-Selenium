@@ -6,10 +6,10 @@ import time
 xpaths = {
         "search_field": "//*[@tabindex='3']",
         "message_field": "//*[@tabindex='10']",
-        "append_button": "/html/body/div[1]/div/div/div[3]/div[4]/div/footer/div[1]/div/span/div/div[1]/div[2]/div/div/div/span",
-        "picture_upload_field": "/html/body/div[1]/div/div/div[2]/div[4]/div/footer/div[1]/div/span/div/div[1]/div[2]/div/span/div/ul/div/div[2]/li/div/input",
-        "document_upload_field": "/html/body/div[1]/div/div/div[3]/div[4]/div/footer/div[1]/div/span/div/div[1]/div[2]/div/span/div/ul/div/div[1]/li/div/input",
-        "description_field": "/html/body/div[1]/div/div/div[3]/div[2]/div[2]/span/div/div/div/div[2]/div/div[1]/div[3]/div/div/div[1]/div[1]/p"
+        "append_button": "/html/body/div[1]/div/div/div[3]/div/div[4]/div/footer/div[1]/div/span/div/div[1]/div/button/span",
+        "picture_upload_field": "/html/body/div[1]/div/div/span[5]/div/ul/div/div/div[2]/li/div/input",
+        "document_upload_field": "/html/body/div[1]/div/div/span[5]/div/ul/div/div/div[1]/li/div/input",
+        "description_field": "/html/body/div[1]/div/div/div[3]/div/div[2]/div[2]/span/div/div/div/div[2]/div/div[1]/div[3]/div/div/div[1]/div[1]/div[1]/p"
     }
 
 class WebInterface:
