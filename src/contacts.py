@@ -1,14 +1,10 @@
 from collections import namedtuple
 from sys import platform
 
-from selenium.webdriver.common.devtools.v85.indexed_db import ObjectStore
-
 from src import utils
 import questionary
 import csv
 import os
-
-from src.utils import display
 
 
 def select_contacts(status, csv_path="../user-data/contacts.csv"):
