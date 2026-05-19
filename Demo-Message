@@ -1,4 +1,4 @@
-Hey $name \raised fist\
+Hey $name \hugging\
 
 diese Nachricht soll die Fähigkeiten dieses Skripts demonstrieren.
 
@@ -15,7 +15,7 @@ Sobald eine Leerzeile dazwischen kommt, wird die Auflistung unterbrochen.
 
 Emojis können mithilfe der mit einem Doppelpunkt beginnenden Abkürzungen eingebunden werden. Verwende in deinen Nachrichten daher die Noation Backslash Emoji Backslash. Einige Beispiele:
 \relaxed\
-\index pointing up\
-\cloud with rain\
+\calendar\
+\sparkles\
 
 Weitere Beispiele findest du in der Datei emojis.

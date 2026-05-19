@@ -52,16 +52,11 @@ def assign_state(tags):
         return "interessiert"
     return "sonstiges"
 
-def assign_phone_number(phone_number, mobile_number):
+def assign_phone_number(phone_number):
     phone_number = assign_number(phone_number)
-    mobile_number = assign_number(mobile_number)
-    if phone_number == mobile_number:
-        return phone_number
-    elif phone_number is None or len(phone_number) == 0:
-        return mobile_number
-    elif mobile_number is None or len(mobile_number) == 0:
-        return phone_number
-    return None
+    if phone_number is None or len(phone_number) == 0:
+        return None
+    return phone_number
 
 def assign_number(call_number):
     if call_number is None or len(call_number) == 0:

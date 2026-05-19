@@ -4,13 +4,13 @@ from selenium.webdriver.common.by import By
 import time
 
 xpaths = {
-        "search_field": "//*[@tabindex='3']",
-        "message_field": "//*[@tabindex='10']",
-        "append_button": "/html/body/div[1]/div/div/div[3]/div/div[4]/div/footer/div[1]/div/span/div/div[1]/div/button/span",
-        "picture_upload_field": "/html/body/div[1]/div/div/span[5]/div/ul/div/div/div[2]/li/div/input",
-        "document_upload_field": "/html/body/div[1]/div/div/span[5]/div/ul/div/div/div[1]/li/div/input",
-        "description_field": "/html/body/div[1]/div/div/div[3]/div/div[2]/div[2]/span/div/div/div/div[2]/div/div[1]/div[3]/div/div/div[1]/div[1]/div[1]/p"
-    }
+        "search_field": "//*[@id='_r_9_']",
+        "message_field": "//*[@data-testid='conversation-compose-box-input']",
+        "append_button": "//*[@data-testid='plus-rounded']",
+        "picture_upload_field": "//*[@aria-label='Fotos & Videos']",
+        "document_upload_field": "//*[@aria-label='Dokument']",
+        "description_field": "//*[@data-testid='media-caption-input-container']"
+}
 
 class WebInterface:
 
