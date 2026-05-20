@@ -1,44 +1,31 @@
-from src import contacts
-from src import message
-from src import utils
+from sys import platform
+import os
+from typing import Callable
+
 import questionary
 
-def single_action_menu(title, functions):
-    functions.update({"exit": lambda: print("schließe " + title)})
-    user_input = None
-    while user_input != "exit":
-        utils.clear_terminal()
-        user_input = questionary.select(
-                 "<--- " + title + " --->",
-                 choices = functions.keys()
-                ).ask()
-        functions[user_input]()
+class Menu:
+    def __init__(self, title):
+        self.title = title
+        self.functions = dict()
 
-def send_message_menu(**kwargs):
-    single_action_menu("Nachricht senden", {
-            "CSV - Datei auswählen": lambda: kwargs.update({'csv_path': questionary.path("Pfad: ").ask()}),
-            "CSV-Pfad anzeigen:": lambda: utils.display(kwargs.get('csv_path')),
-            "Kontakte auswählen": lambda: kwargs.update({'contacts': select_contacts_menu(kwargs.get('csv_path'))}),
-            "Kontakte anzeigen": lambda: contacts.display_contacts(kwargs.get('contacts')),
-            "Bild auswählen": lambda: kwargs.update({'picture_path': questionary.path("Pfad: ").ask()}),
-            "Bild-Pfad anzeigen:": lambda: utils.display(kwargs.get('picture_path')),
-            "Dokument auswählen": lambda: kwargs.update({'document_path': questionary.path("Pfad: ").ask()}),
-            "Dokument-Pfad anzeigen:": lambda: utils.display(kwargs.get('document_path')),
-            "Nachricht auswählen": lambda: kwargs.update({'message_path': questionary.path("Pfad: ").ask()}),
-            "Nachricht anzeigen": lambda: message.display_message(kwargs.get('message_path')),
-            "Nachricht abschicken": lambda: message.send_message(kwargs.get('contacts'), kwargs.get('message_path'), kwargs.get('picture_path'), kwargs.get('document_path'))
-        })
+    def clear(self):
+        if platform == "win32":
+            os.system('cls')
+        elif platform == "linux" or platform == "linux2":
+            os.system('clear')
 
-def select_contacts_menu(csv_path, **kwargs):
-    print(csv_path)
-    single_action_menu("Gruppe auswählen", {
-            "Alle": lambda: kwargs.update({'contacts': contacts.select_contacts("all", csv_path)}),
-            #"Mitglieder": lambda: kwargs.update({'contacts': contacts.select_contacts("mitglied", csv_path)}),
-            #"Interessierte": lambda: kwargs.update({'contacts': contacts.select_contacts("interessiert", csv_path)}),
-            #"Lernnetz": lambda: kwargs.update({'contacts': contacts.select_contacts("lernnetz", csv_path)}),
-            #"Sonstige": lambda: kwargs.update({'contacts': contacts.select_contacts("sonstige", csv_path)})
-        })
-    return kwargs.get('contacts')
+    def insert_option(self, label: str, function: Callable):
+        self.functions.update({label: function})
 
-def plan_message_menu():
-    pass
+    def display(self):
+        self.functions.update({"exit": lambda: print("schließe " + self.title)})
+        self.clear()
+        user_input = None
+        while user_input != "exit":
+            self.clear()
+            user_input = questionary.select(
+                "<--- " + self.title + " --->",
+                choices=self.functions.keys()
+            ).ask()
+            self.functions[user_input]()
