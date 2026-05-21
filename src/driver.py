@@ -45,6 +45,8 @@ class Driver:
         search_field.send_keys(Keys.ENTER)
 
     def paste(self):
+        message_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["message_field"])))
+        message_field.click()
         ActionChains(self.driver).key_down(Keys.CONTROL).key_down('v').key_up('v').key_up(Keys.CONTROL).perform()
 
     def sendEmojie(self, input_field, unicode_character: str):
@@ -63,6 +65,7 @@ class Driver:
 
     def writeMessage(self, message: Message):
         message_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["message_field"])))
+        message_field.click()
         for c in message.get_message():
             if int(c.encode().hex(), 16) == 0x000A:
                 ActionChains(self.driver).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform()
@@ -74,6 +77,7 @@ class Driver:
 
     def writeDescription(self, message: Message):
         description_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["description_field"])))
+        description_field.click()
         for c in message.get_message():
             if int(c.encode().hex(), 16) == 0x000A:
                 ActionChains(self.driver).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform()
