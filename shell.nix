@@ -16,8 +16,9 @@ pkgs.mkShell {
   ];
 
   shellHook = ''
+    export CLIPBOARD_NOAUDIO=true
     export CLIPBOARD_NOGUI=true
-    export CLIPBOARD_NOPROGRESS=true
+    export CLIPBOARD_SILENT=true
     export CLIPBOARD_NOREMOTE=true
   '';
 }
