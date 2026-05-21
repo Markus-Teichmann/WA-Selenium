@@ -67,28 +67,27 @@ class Messenger:
 
     def send_message(self):
         if not self.message is None:
+            #if self.image.get_path() is not None:
+            #    self.image.move_to_clipboard()
+            #elif self.document.get_path() is not None:
+            #    self.document.move_to_clipboard()
             for contact in self.contacts:
                 print(contact, end=" ")
                 self.message.insert_receiver(contact)
                 self.driver.openChat(contact)
-                time.sleep(1)
                 if self.image.get_path() is not None:
                     self.image.move_to_clipboard()
-                    time.sleep(2)
+                    time.sleep(3)
                     self.driver.paste()
-                    time.sleep(1)
                     self.driver.writeDescription(self.message)
-                    time.sleep(1)
                 elif self.document.get_path() is not None:
                     self.document.move_to_clipboard()
-                    time.sleep(2)
+                    time.sleep(3)
                     self.driver.paste()
-                    time.sleep(1)
                     self.driver.writeDescription(self.message)
-                    time.sleep(1)
                 else:
-                    self.driver.writeMessage(self.message)
                     time.sleep(1)
+                    self.driver.writeMessage(self.message)
                 print("\U0001F44D")
             self.image.reset()
             self.document.reset()

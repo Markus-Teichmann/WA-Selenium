@@ -1,6 +1,7 @@
 from selenium import webdriver
 import os
 import time
+from sys import platform
 
 from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.common.by import By
@@ -20,8 +21,11 @@ class Driver:
 
     def __init__(self):
         options = webdriver.ChromeOptions()
-        path_option = str("user-data-dir=" + os.getcwd() + "\\\\session-data")
+        path_option = str("user-data-dir=" + os.getcwd() + "/session-data")
+        if platform == "win32":
+            path_option = str("user-data-dir=" + os.getcwd() + "\\\\session-data")
         options.add_argument(path_option)
+        #options.add_argument('--headless=new')
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         self.driver = webdriver.Chrome(options=options)
@@ -31,9 +35,13 @@ class Driver:
 
     def openChat(self, contact: Contact):
         search_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["search_field"])))
+        search_field.click()
+        time.sleep(1)
+        ActionChains(self.driver).key_down(Keys.CONTROL).key_down('a').key_up('a').key_up(Keys.CONTROL).perform()
+        time.sleep(1)
         for c in contact.getPhoneNumber():
             search_field.send_keys(c)
-        time.sleep(1)
+        time.sleep(2)
         search_field.send_keys(Keys.ENTER)
 
     def paste(self):
