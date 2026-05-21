@@ -4,21 +4,26 @@ from sys import platform
 
 class Document:
     def __init__(self):
-        self.path = None
+        self.relative_path = None
+        self.absolute_path = None
 
     def select_document(self):
-        relative_path = questionary.path("Pfad").ask()
-        self.path = os.path.abspath(relative_path)
+        self.relative_path = questionary.path("Pfad").ask().strip()
+        self.absolute_path = os.path.abspath(self.relative_path).strip()
 
     def get_path(self):
-        return self.path
+        if platform == "win32":
+            return self.absolute_path
+        else:
+            return self.relative_path
 
     def reset(self):
-        self.path = None
+        self.relative_path = None
+        self.absolute_path = None
 
     def move_to_clipboard(self):
-        if self.path is not None:
+        if self.relative_path is not None:
             if platform == "win32":
-                os.system("powershell -c \"Set-Clipboard -Path '" + self.path + "'\"")
+                os.system("powershell -c \"Set-Clipboard -Path '" + self.absolute_path + "'\"")
             else:
-                os.system("cb copy '" + self.path + "'")
+                os.system("cb copy " + self.relative_path)
