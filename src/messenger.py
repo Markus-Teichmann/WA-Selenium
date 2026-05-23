@@ -59,7 +59,7 @@ class Messenger:
                 self.message.insert_receiver(contact)
                 self.driver.openChat(contact)
                 if self.file.get_path() is not None:
-                    self.driver.paste(self.file.get_path())
+                    self.driver.send_file(self.file)
                     self.driver.writeDescription(self.message)
                 else:
                     self.driver.writeMessage(self.message)

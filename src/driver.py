@@ -1,19 +1,14 @@
-import base64
-import mimetypes
-
 from selenium import webdriver
 import os
 import time
 from sys import platform
-
 from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
 from .models.contact import Contact
 from .models.message import Message
-
+from .models.file import File
 
 class Driver:
     X_PATHS = {
@@ -47,7 +42,7 @@ class Driver:
         time.sleep(2)
         search_field.send_keys(Keys.ENTER)
 
-    def paste(self, path):
+    def send_file(self, file: File):
         JAVA_SCRIPT = """
             const messageField = arguments[0];
             const type = arguments[1];
@@ -65,11 +60,7 @@ class Driver:
             messageField.dispatchEvent(event);
         """
         message_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["message_field"])))
-        mimeType, encoding = mimetypes.guess_type(path)
-        content = base64.b64encode(open(path, 'rb').read()).decode('utf8')
-        name = os.path.basename(path)
-        self.driver.execute_script(JAVA_SCRIPT, message_field, mimeType, content, name)
-
+        self.driver.execute_script(JAVA_SCRIPT, message_field, file.get_type(), file.get_content(), file.get_name())
 
     def sendEmojie(self, input_field, unicode_character: str):
         JAVA_SCRIPT = """
