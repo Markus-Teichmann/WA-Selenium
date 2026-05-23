@@ -1,4 +1,13 @@
-*.log
-session-data/*
-user-data/*
-Sharetexte/*
+*
+!README.md
+!chromedriver.exe
+!main.py
+!shell.nix
+!src/
+!src/driver.py
+!src/menu.py
+!src/messenger.py
+!src/reader.py
+!src/models/contact.py
+!src/models/file.py
+!src/models/message.py
