@@ -72,12 +72,16 @@ class Messenger:
                 self.message.insert_receiver(contact)
                 self.driver.openChat(contact)
                 if self.image.get_path() is not None:
-                    self.image.move_to_clipboard()
-                    self.driver.paste()
+                    # self.image.move_to_clipboard()
+                    # self.driver.paste()
+                    # self.driver.dragAndDrop(self.image.get_path())
+                    self.driver.paste_image(self.image.get_path())
                     self.driver.writeDescription(self.message)
                 elif self.document.get_path() is not None:
-                    self.document.move_to_clipboard()
-                    self.driver.paste()
+                    # self.document.move_to_clipboard()
+                    # self.driver.paste()
+                    # self.driver.attatchDocument(self.document.get_path())
+                    self.driver.paste_document(self.document.get_path())
                     self.driver.writeDescription(self.message)
                 else:
                     time.sleep(1)
