@@ -28,6 +28,7 @@ class Driver:
         if platform == "win32":
             path_option = str("user-data-dir=" + os.getcwd() + "\\\\session-data")
         options.add_argument(path_option)
+        options.add_argument("--headless=new")
         options.add_experimental_option("excludeSwitches", ["enable-automation", "disable-popup-blocking"])
         options.add_experimental_option('useAutomationExtension', False)
         self.driver = webdriver.Chrome(options=options)
