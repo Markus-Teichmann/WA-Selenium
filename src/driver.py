@@ -1,6 +1,5 @@
 import base64
 import mimetypes
-from platform import system
 
 from selenium import webdriver
 import os
@@ -29,7 +28,6 @@ class Driver:
         if platform == "win32":
             path_option = str("user-data-dir=" + os.getcwd() + "\\\\session-data")
         options.add_argument(path_option)
-        #options.add_argument('--headless=new')
         options.add_experimental_option("excludeSwitches", ["enable-automation", "disable-popup-blocking"])
         options.add_experimental_option('useAutomationExtension', False)
         self.driver = webdriver.Chrome(options=options)
@@ -48,13 +46,15 @@ class Driver:
         time.sleep(2)
         search_field.send_keys(Keys.ENTER)
 
-    def paste_document(self, path):
+    def paste(self, path):
         JAVA_SCRIPT = """
             const messageField = arguments[0];
             const type = arguments[1];
             const content = arguments[2];
+            const name = arguments[3];
             const response = await fetch(`data:${type};base64,${content}`);
-            const file = new File([await response.blob()], 'document');
+            const blob = await response.blob();
+            const file = new File([blob], name, {type: blob.type});
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(file);
             const event = new ClipboardEvent('paste', {
@@ -63,29 +63,11 @@ class Driver:
             });
             messageField.dispatchEvent(event);
         """
-        mime_type, encoding = mimetypes.guess_type(path)
-        content = base64.b64encode(open(path, 'rb').read()).decode('utf8')
         message_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["message_field"])))
-        self.driver.execute_script(JAVA_SCRIPT, message_field, mime_type, content)
-
-    def paste_image(self, path):
-        COPY_TO_CLIPBOARD = """
-            const type = arguments[0];
-            const content = arguments[1];
-            const response = await fetch(`data:${type};base64,${content}`);
-            const blob = await response.blob();
-            await navigator.clipboard.write([
-                new ClipboardItem({
-                    [blob.type]: Promise.resolve(blob)
-                }),
-            ]);
-        """
-        mime_type, encoding = mimetypes.guess_type(path)
+        mimeType, encoding = mimetypes.guess_type(path)
         content = base64.b64encode(open(path, 'rb').read()).decode('utf8')
-        self.driver.execute_script(COPY_TO_CLIPBOARD, mime_type, content)
-        message_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["message_field"])))
-        message_field.click()
-        ActionChains(self.driver).key_down(Keys.CONTROL).key_down('v').key_up('v').key_up(Keys.CONTROL).perform()
+        name = os.path.basename(path)
+        self.driver.execute_script(JAVA_SCRIPT, message_field, mimeType, content, name)
 
 
     def sendEmojie(self, input_field, unicode_character: str):
