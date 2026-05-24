@@ -3,6 +3,8 @@ from .models.message import Message
 from .driver import Driver
 from .reader import CSVReader
 
+import time
+
 
 class Messenger:
     def __init__(self):
@@ -55,7 +57,7 @@ class Messenger:
     def send_message(self):
         if not self.message is None:
             for contact in self.contacts:
-                print(contact, end=" ")
+                print(contact, end=" ", flush=True)
                 self.message.insert_receiver(contact)
                 self.driver.openChat(contact)
                 if self.file.get_path() is not None:
@@ -64,4 +66,5 @@ class Messenger:
                 else:
                     self.driver.writeMessage(self.message)
                 print("\U0001F44D")
+                time.sleep(2)
             self.file.reset()

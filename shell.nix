@@ -6,7 +6,7 @@ pkgs.mkShell {
     pkgs.python311Packages.selenium
     pkgs.python311Packages.questionary
     #pkgs.chromedriver 
-    #pkgs.google-chrome { allowUnfree = true; }
+    pkgs.google-chrome { allowUnfree = true; }
 
     # For Clipboard Access:
     # pkgs.clipboard-jh

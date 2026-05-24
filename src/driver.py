@@ -40,7 +40,12 @@ class Driver:
         for c in contact.getPhoneNumber():
             search_field.send_keys(c)
         time.sleep(2)
-        search_field.send_keys(Keys.ENTER)
+        ActionChains(self.driver).key_down(Keys.TAB).key_up(Keys.TAB).perform()
+        time.sleep(1)
+        ActionChains(self.driver).key_down(Keys.TAB).key_up(Keys.TAB).perform()
+        time.sleep(1)
+        ActionChains(self.driver).key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
+        time.sleep(1)
 
     def send_file(self, file: File):
         JAVA_SCRIPT = """
