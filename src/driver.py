@@ -12,7 +12,7 @@ from .models.file import File
 
 class Driver:
     X_PATHS = {
-        "search_field": "//*[@id='_r_9_']",
+        "search_field": "//*[@id='_r_a_']",
         "message_field": "//*[@data-testid='conversation-compose-box-input']",
         "description_field": "//*[@data-testid='media-caption-input-container']",
     }
