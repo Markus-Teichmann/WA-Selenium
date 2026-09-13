@@ -2,6 +2,8 @@ from selenium import webdriver
 import os
 import time
 from sys import platform
+
+from selenium.common import TimeoutException
 from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -12,7 +14,9 @@ from .models.file import File
 
 class Driver:
     X_PATHS = {
-        "search_field": "//*[@id='_r_a_']",
+        "new_chat": "//*[@type='button' and @aria-label='Neuer Chat']",
+        "search_field": "//*[@role='textbox']",
+        "first_item": "//*[@role='listitem' and @data-testid='list-item-0']",
         "message_field": "//*[@data-testid='conversation-compose-box-input']",
         "description_field": "//*[@data-testid='media-caption-input-container']",
     }
@@ -29,23 +33,31 @@ class Driver:
         self.driver = webdriver.Chrome(options=options)
         self.driver.maximize_window()
         self.driver.get("https://web.whatsapp.com")
-        self.wait = WebDriverWait(self.driver, 60)
+        self.wait = WebDriverWait(self.driver, 30)
 
     def openChat(self, contact: Contact):
-        search_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["search_field"])))
-        search_field.click()
-        time.sleep(1)
-        ActionChains(self.driver).key_down(Keys.CONTROL).key_down('a').key_up('a').key_up(Keys.CONTROL).perform()
-        time.sleep(1)
-        for c in contact.getPhoneNumber():
-            search_field.send_keys(c)
-        time.sleep(2)
-        ActionChains(self.driver).key_down(Keys.TAB).key_up(Keys.TAB).perform()
-        time.sleep(1)
-        ActionChains(self.driver).key_down(Keys.TAB).key_up(Keys.TAB).perform()
-        time.sleep(1)
-        ActionChains(self.driver).key_down(Keys.ENTER).key_up(Keys.ENTER).perform()
-        time.sleep(1)
+        try:
+            new_chat = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["new_chat"])))
+            new_chat.click()
+        except:
+            raise Exception("XPath für neuen Chat ist inkorrekt")
+        else:
+            try:
+                search_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["search_field"])))
+                search_field.click()
+                search_field.clear()
+            except:
+                raise Exception("XPath für das Suchfeld ist inkorrekt")
+            else:
+                for c in contact.getPhoneNumber():
+                    search_field.send_keys(c)
+                time.sleep(1)
+                try:
+                    first_item = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["first_item"])))
+                    first_item.click()
+                except:
+                    self.driver.get("https://web.whatsapp.com")
+                    raise TimeoutException
 
     def send_file(self, file: File):
         JAVA_SCRIPT = """
@@ -64,8 +76,11 @@ class Driver:
             });
             messageField.dispatchEvent(event);
         """
-        message_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["message_field"])))
-        self.driver.execute_script(JAVA_SCRIPT, message_field, file.get_type(), file.get_content(), file.get_name())
+        try:
+            message_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["message_field"])))
+            self.driver.execute_script(JAVA_SCRIPT, message_field, file.get_type(), file.get_content(), file.get_name())
+        except:
+            raise Exception("XPath für das Message Feld ist inkorrekt")
 
     def sendEmojie(self, input_field, unicode_character: str):
         JAVA_SCRIPT = """
@@ -82,25 +97,33 @@ class Driver:
         self.driver.execute_script(JAVA_SCRIPT, input_field, unicode_character)
 
     def writeMessage(self, message: Message):
-        message_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["message_field"])))
-        message_field.click()
-        for c in message.get_message():
-            if int(c.encode().hex(), 16) == 0x000A:
-                ActionChains(self.driver).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform()
-            elif int(c.encode().hex(), 16) <= 0xFFFF:
-                message_field.send_keys(c)
-            else:
-                self.sendEmojie(message_field, c)
-        message_field.send_keys(Keys.ENTER)
+        try:
+            message_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["message_field"])))
+            message_field.click()
+        except:
+            raise Exception("XPath für das Message Feld ist inkorrekt")
+        else:
+            for c in message.get_message():
+                if int(c.encode().hex(), 16) == 0x000A:
+                    ActionChains(self.driver).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform()
+                elif int(c.encode().hex(), 16) <= 0xFFFF:
+                    message_field.send_keys(c)
+                else:
+                    self.sendEmojie(message_field, c)
+            message_field.send_keys(Keys.ENTER)
 
     def writeDescription(self, message: Message):
-        description_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["description_field"])))
-        description_field.click()
-        for c in message.get_message():
-            if int(c.encode().hex(), 16) == 0x000A:
-                ActionChains(self.driver).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform()
-            elif int(c.encode().hex(), 16) <= 0xFFFF:
-                description_field.send_keys(c)
-            else:
-                self.sendEmojie(description_field, c)
-        description_field.send_keys(Keys.ENTER)
+        try:
+            description_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["description_field"])))
+            description_field.click()
+        except:
+            raise Exception("XPATH für das Description Feld ist inkorrekt")
+        else:
+            for c in message.get_message():
+                if int(c.encode().hex(), 16) == 0x000A:
+                    ActionChains(self.driver).key_down(Keys.SHIFT).key_down(Keys.ENTER).key_up(Keys.SHIFT).key_up(Keys.ENTER).perform()
+                elif int(c.encode().hex(), 16) <= 0xFFFF:
+                    description_field.send_keys(c)
+                else:
+                    self.sendEmojie(description_field, c)
+            description_field.send_keys(Keys.ENTER)

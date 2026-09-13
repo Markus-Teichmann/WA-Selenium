@@ -1,3 +1,5 @@
+from selenium.common import TimeoutException
+
 from .models.file import File
 from .models.message import Message
 from .driver import Driver
@@ -59,12 +61,25 @@ class Messenger:
             for contact in self.contacts:
                 print(contact, end=" ", flush=True)
                 self.message.insert_receiver(contact)
-                self.driver.openChat(contact)
-                if self.file.get_path() is not None:
-                    self.driver.send_file(self.file)
-                    self.driver.writeDescription(self.message)
+                try:
+                    self.driver.openChat(contact)
+                except TimeoutException as exception:
+                    print("X (NoWhatsApp)")
+                    continue
+                except Exception as exception:
+                    print(str(exception))
+                    break
                 else:
-                    self.driver.writeMessage(self.message)
-                print("\U0001F44D")
-                time.sleep(2)
+                    try:
+                        if self.file.get_path() is not None:
+                            self.driver.send_file(self.file)
+                            self.driver.writeDescription(self.message)
+                        else:
+                            self.driver.writeMessage(self.message)
+                        print("\U0001F44D")
+                        time.sleep(2)
+                    except Exception as exception:
+                        print(str(exception))
+                        break
             self.file.reset()
+            self.display("Done")
