@@ -1,3 +1,5 @@
+from typing import List
+
 from selenium import webdriver
 import os
 import time
@@ -34,8 +36,9 @@ class Driver:
         self.driver.maximize_window()
         self.driver.get("https://web.whatsapp.com")
         self.wait = WebDriverWait(self.driver, 30)
+        self.is_busy = False
 
-    def openChat(self, contact: Contact):
+    def __open_chat(self, contact: Contact):
         try:
             new_chat = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["new_chat"])))
             new_chat.click()
@@ -59,7 +62,7 @@ class Driver:
                     self.driver.get("https://web.whatsapp.com")
                     raise TimeoutException
 
-    def send_file(self, file: File):
+    def __send_file(self, file: File):
         JAVA_SCRIPT = """
             const messageField = arguments[0];
             const type = arguments[1];
@@ -82,7 +85,7 @@ class Driver:
         except:
             raise Exception("XPath für das Message Feld ist inkorrekt")
 
-    def sendEmojie(self, input_field, unicode_character: str):
+    def __send_emojie(self, input_field, unicode_character: str):
         JAVA_SCRIPT = """
             const inputField = arguments[0];
             const message = arguments[1];
@@ -96,7 +99,7 @@ class Driver:
         """
         self.driver.execute_script(JAVA_SCRIPT, input_field, unicode_character)
 
-    def writeMessage(self, message: Message):
+    def __write_message(self, message: Message):
         try:
             message_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["message_field"])))
             message_field.click()
@@ -109,10 +112,10 @@ class Driver:
                 elif int(c.encode().hex(), 16) <= 0xFFFF:
                     message_field.send_keys(c)
                 else:
-                    self.sendEmojie(message_field, c)
+                    self.__send_emojie(message_field, c)
             message_field.send_keys(Keys.ENTER)
 
-    def writeDescription(self, message: Message):
+    def __write_description(self, message: Message):
         try:
             description_field = self.wait.until(EC.element_to_be_clickable((By.XPATH, self.X_PATHS["description_field"])))
             description_field.click()
@@ -125,5 +128,53 @@ class Driver:
                 elif int(c.encode().hex(), 16) <= 0xFFFF:
                     description_field.send_keys(c)
                 else:
-                    self.sendEmojie(description_field, c)
+                    self.__send_emojie(description_field, c)
             description_field.send_keys(Keys.ENTER)
+
+    def __send_message(self, contacts: List[Contact], message: Message, file: File):
+        for contact in contacts:
+            print(contact, end=" ", flush=True)
+            message.insert_receiver(contact)
+            try:
+                self.__open_chat(contact)
+            except TimeoutException as exception:
+                print("X (NoWhatsApp)")
+                continue
+            except Exception as exception:
+                print(str(exception))
+                break
+            else:
+                try:
+                    if file.get_path() is not None:
+                        self.__send_file(file)
+                        self.__write_description(message)
+                    else:
+                        self.__write_message(message)
+                    print("\U0001F44D")
+                    time.sleep(2)
+                except Exception as exception:
+                    print(str(exception))
+                    break
+        file.reset()
+
+    def send_message_thread_safe(self, contacts: List[Contact], message: Message, file: File):
+        if self.is_busy:
+            print("Driver is busy try again later.")
+            time.sleep(1)
+        else:
+            self.is_busy = True
+            self.__send_message(contacts, message, file)
+            self.is_busy = False
+
+    #def test(self):
+    #    if self.is_busy:
+    #        print("Driver is busy try again later.")
+    #        time.sleep(1)
+    #    else:
+    #        self.is_busy = True
+    #        print("Driver runs")
+    #        time.sleep(10)
+    #        print("Driver finishes")
+    #        self.is_busy = False
+
+driver = Driver()

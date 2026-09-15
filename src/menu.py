@@ -9,7 +9,7 @@ class Menu:
         self.title = title
         self.functions = dict()
 
-    def clear(self):
+    def __clear(self):
         if platform == "win32":
             os.system('cls')
         elif platform == "linux" or platform == "linux2":
@@ -18,14 +18,14 @@ class Menu:
     def insert_option(self, label: str, function: Callable):
         self.functions.update({label: function})
 
-    def display(self, thread_safe: Callable):
+    def display(self):
         self.functions.update({"exit": lambda: print("schließe " + self.title)})
-        self.clear()
+        self.__clear()
         user_input = None
         while user_input != "exit":
-            self.clear()
+            self.__clear()
             user_input = questionary.select(
                 "<--- " + self.title + " --->",
                 choices=self.functions.keys()
             ).ask()
-            thread_safe(self.functions[user_input])
+            self.functions[user_input]()
