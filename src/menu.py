@@ -18,7 +18,7 @@ class Menu:
     def insert_option(self, label: str, function: Callable):
         self.functions.update({label: function})
 
-    def display(self):
+    def display(self, thread_safe: Callable):
         self.functions.update({"exit": lambda: print("schließe " + self.title)})
         self.clear()
         user_input = None
@@ -28,4 +28,4 @@ class Menu:
                 "<--- " + self.title + " --->",
                 choices=self.functions.keys()
             ).ask()
-            self.functions[user_input]()
+            thread_safe(self.functions[user_input])
