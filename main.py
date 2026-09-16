@@ -6,7 +6,8 @@ from src.scheduler import Scheduler
 
 if __name__ == "__main__":
     scheduler = Scheduler()
-    threading.Thread(target=scheduler.start, daemon=True).start()
+    #threading.Thread(target=scheduler.start, daemon=True).start()
+    threading.Thread(target=scheduler.start).start()
     messenger = Messenger()
     menu = Menu("Hauptmenü")
     menu.insert_option("CSV Datei auswählen", messenger.select_csv_file)
@@ -18,5 +19,5 @@ if __name__ == "__main__":
     menu.insert_option("Nachricht auswählen", messenger.select_message)
     menu.insert_option("Nachricht anzeigen", messenger.display_message)
     menu.insert_option("Nachricht abschicken", messenger.send_message)
-    menu.insert_option("Test Driver", messenger.test_driver)
+    menu.insert_option("Nachricht planen", messenger.schedule_message)
     menu.display()

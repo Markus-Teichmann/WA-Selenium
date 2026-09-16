@@ -9,6 +9,7 @@ from .driver import driver
 from .reader import CSVReader
 
 import time
+import os
 
 
 class Messenger:
@@ -76,10 +77,37 @@ class Messenger:
     # Und soll das dann in eine passende JOBS CSV schreiben.
     # Danach wird alles wieder auf die Anfangswerte gesetzt.
     def schedule_message(self):
-        self.contacts = None
-        self.file = File()
-        self.message = Message()
-        self.date = Date()
+        self.select_date()
+        date = self.date.serialize()
+        message = self.message.serialize()
+        contacts = '['
+        for i in range(len(self.contacts) -1):
+            contact = self.contacts[i]
+            contacts += contact.serialize() + ', '
+        contact = self.contacts[len(self.contacts) - 1]
+        contacts += contact.serialize() + ']'
+        file = self.file.serialize()
+        if date is None or message is None or len(self.contacts) == 0:
+            print("Bitte gebe zumindest ein Datum, eine Nachricht und Kontakte an.")
+            time.sleep(3)
+        else:
+            json = ('{' +
+                '\"date\": ' + date + ', ' +
+                '\"message\": ' + message + ', ' +
+                '\"contacts\": ' + contacts + ', ' +
+                '\"file\": ' + file +
+            '}')
+            file_path = os.path.abspath('./user-data/jobs.CSV')
+            file_size = os.path.getsize(file_path)
+            with open(file_path, 'a', encoding='utf-8') as file:
+                if file_size == 0:
+                    file.write(json)
+                else:
+                    file.write('; ' + json)
+        #self.contacts = None
+        #self.file = File()
+        #self.message = Message()
+        #self.date = Date()
 
     def send_message(self):
         if not self.message is None and not self.contacts is None:

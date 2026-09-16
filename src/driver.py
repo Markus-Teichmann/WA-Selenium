@@ -166,6 +166,9 @@ class Driver:
             self.__send_message(contacts, message, file)
             self.is_busy = False
 
+    def close(self):
+        self.driver.quit()
+
     #def test(self):
     #    if self.is_busy:
     #        print("Driver is busy try again later.")

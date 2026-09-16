@@ -1,12 +1,13 @@
 from .contact import Contact
 import questionary
 import os
+import base64
 
 
 class Message:
-    def __init__(self):
-        self.path = None
-        self.message = None
+    def __init__(self, path=None, message=None):
+        self.path = path
+        self.message = message
 
     def select_message(self):
         self.path = questionary.path("Pfad").ask()
@@ -21,3 +22,11 @@ class Message:
         return self.message
         #with open(self.message_path,'r', encoding="utf-8") as file:
         #    return file.read().replace('$name', self.to.first_name)
+
+    def serialize(self):
+        if self is None or self.path is None or self.message is None:
+            return None
+        return ('{' +
+            '\"path\": \"' + base64.b64encode(self.path.encode('utf8')).decode('utf8') + '\", ' +
+            '\"message\": \"' + base64.b64encode(self.message.encode('utf8')).decode('utf8') +
+        '\"}')

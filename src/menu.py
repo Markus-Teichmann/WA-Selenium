@@ -3,6 +3,7 @@ import os
 from typing import Callable
 
 import questionary
+from .driver import driver
 
 class Menu:
     def __init__(self, title):
@@ -19,7 +20,10 @@ class Menu:
         self.functions.update({label: function})
 
     def display(self):
-        self.functions.update({"exit": lambda: print("schließe " + self.title)})
+        self.functions.update({"exit": lambda: (
+            print("schließe " + self.title),
+            driver.close()
+        )})
         self.__clear()
         user_input = None
         while user_input != "exit":

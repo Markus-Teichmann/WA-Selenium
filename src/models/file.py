@@ -5,12 +5,12 @@ import questionary
 import os.path
 
 class File:
-    def __init__(self):
-        self.relative_path = None
-        self.absolute_path = None
-        self.type = None
-        self.content = None
-        self.name = None
+    def __init__(self, relative_path=None, absolute_path=None, type=None, content=None, name=None):
+        self.relative_path = relative_path
+        self.absolute_path = absolute_path
+        self.type = type
+        self.content = content
+        self.name = name
 
     def select_file(self):
         self.relative_path = questionary.path("Pfad").ask().strip()
@@ -38,3 +38,14 @@ class File:
         self.type = None
         self.content = None
         self.name = None
+
+    def serialize(self):
+        if self is None or self.absolute_path is None or self.relative_path is None or self.type is None or self.content is None or self.name is None:
+            return None
+        return ('{' +
+            '\"relative_path\": \"' + base64.b64encode(self.relative_path.encode('utf8')).decode('utf8') + '\", ' +
+            '\"absolute_path\": \"' + base64.b64encode(self.absolute_path.encode('utf8')).decode('utf8') + '\", ' +
+            '\"type\": \"' + base64.b64encode(self.type.encode('utf8')).decode('utf8') + '\", ' +
+            '\"content\": \"' + self.content + '\", ' +
+            '\"name\": \"' + base64.b64encode(self.name.encode('utf8')).decode('utf8') +
+        '\"}')
