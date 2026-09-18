@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Callable
 
 from selenium import webdriver
 import os
@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from .models.contact import Contact
 from .models.message import Message
 from .models.file import File
+from .logger import logger
 
 class Driver:
     X_PATHS = {
@@ -131,17 +132,22 @@ class Driver:
                     self.__send_emojie(description_field, c)
             description_field.send_keys(Keys.ENTER)
 
-    def __send_message(self, contacts: List[Contact], message: Message, file: File):
+    def __send_message(self, contacts: List[Contact], message: Message, file: File, mode: str):
         for contact in contacts:
-            print(contact, end=" ", flush=True)
+            if mode == 'stdout':
+                print(contact, end=" ", flush=True)
+            if mode == 'logger':
+                logger.log('to: ' + str(contact))
             message.insert_receiver(contact)
             try:
                 self.__open_chat(contact)
             except TimeoutException as exception:
-                print("X (NoWhatsApp)")
+                if mode == 'stdout':
+                    print("X (NoWhatsApp)")
                 continue
             except Exception as exception:
-                print(str(exception))
+                if mode == 'stdout':
+                    print(str(exception))
                 break
             else:
                 try:
@@ -150,24 +156,39 @@ class Driver:
                         self.__write_description(message)
                     else:
                         self.__write_message(message)
-                    print("\U0001F44D")
+                    if mode == 'stdout':
+                        print("\U0001F44D")
                     time.sleep(2)
                 except Exception as exception:
-                    print(str(exception))
+                    if mode == 'stdout':
+                        print(str(exception))
                     break
         file.reset()
 
-    def send_message_thread_safe(self, contacts: List[Contact], message: Message, file: File):
+    def __thread_safe(self, function: Callable):
         if self.is_busy:
-            print("Driver is busy try again later.")
-            time.sleep(1)
+            return False
         else:
             self.is_busy = True
-            self.__send_message(contacts, message, file)
+            value = function()
             self.is_busy = False
+            if value is not None:
+                return value
+            return True
+
+    def __wait_for(self, function: Callable):
+        value = None
+        while not value:
+            value = self.__thread_safe(function)
+            time.sleep(1)
+        return value
+
+    def send_message_thread_safe(self, contacts: List[Contact], message: Message, file: File, mode: str):
+        self.__wait_for(lambda: self.__send_message(contacts, message, file, mode))
 
     def close(self):
-        self.driver.quit()
+        logger.log('Shutting down')
+        self.__wait_for(lambda: self.driver.quit())
 
     #def test(self):
     #    if self.is_busy:

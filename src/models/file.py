@@ -49,3 +49,18 @@ class File:
             '\"content\": \"' + self.content + '\", ' +
             '\"name\": \"' + base64.b64encode(self.name.encode('utf8')).decode('utf8') +
         '\"}')
+
+    @staticmethod
+    def parse(json: dict):
+        if ('relative_path' in json and
+            'absolute_path' in json and
+            'type' in json and
+            'content' in json and
+            'name' in json):
+            return File(
+                base64.b64decode(json['relative_path'].encode('utf8')).decode('utf8'),
+                base64.b64decode(json['absolute_path'].encode('utf8')).decode('utf8'),
+                base64.b64decode(json['type'].encode('utf8')).decode('utf8'),
+                json['content'],
+                base64.b64decode(json['name'].encode('utf8')).decode('utf8')
+            )

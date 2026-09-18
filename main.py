@@ -6,8 +6,8 @@ from src.scheduler import Scheduler
 
 if __name__ == "__main__":
     scheduler = Scheduler()
-    #threading.Thread(target=scheduler.start, daemon=True).start()
-    threading.Thread(target=scheduler.start).start()
+    threading.Thread(target=scheduler.start, daemon=True).start()
+    #threading.Thread(target=scheduler.start).start()
     messenger = Messenger()
     menu = Menu("Hauptmenü")
     menu.insert_option("CSV Datei auswählen", messenger.select_csv_file)

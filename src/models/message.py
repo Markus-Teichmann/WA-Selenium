@@ -30,3 +30,12 @@ class Message:
             '\"path\": \"' + base64.b64encode(self.path.encode('utf8')).decode('utf8') + '\", ' +
             '\"message\": \"' + base64.b64encode(self.message.encode('utf8')).decode('utf8') +
         '\"}')
+
+    @staticmethod
+    def parse(json: dict):
+        if ('path' in json and
+            'message' in json):
+            return Message(
+                base64.b64decode(json['path'].encode('utf8')).decode('utf8'),
+                base64.b64decode(json['message'].encode('utf8')).decode('utf8')
+            )

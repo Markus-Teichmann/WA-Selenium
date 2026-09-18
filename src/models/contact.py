@@ -19,5 +19,12 @@ class Contact:
                 '\"phone_number\": \"' + self.phone_number +
         '\"}')
 
+    @staticmethod
+    def parse(json: dict):
+        if ('first_name' in json and
+            'last_name' in json and
+            'phone_number' in json):
+            return Contact(json['first_name'], json['last_name'], json['phone_number'])
+
     def __str__(self):
         return self.first_name + " - " + self.last_name + " - " + self.phone_number

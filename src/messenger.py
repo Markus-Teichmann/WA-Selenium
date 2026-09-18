@@ -103,15 +103,15 @@ class Messenger:
                 if file_size == 0:
                     file.write(json)
                 else:
-                    file.write('; ' + json)
+                    file.write('\n' + json)
         #self.contacts = None
         #self.file = File()
         #self.message = Message()
         #self.date = Date()
 
-    def send_message(self):
+    def send_message(self, mode='stdout'):
         if not self.message is None and not self.contacts is None:
-            driver.send_message_thread_safe(self.contacts, self.message, self.file)
+            driver.send_message_thread_safe(self.contacts, self.message, self.file, mode)
         #if not self.message is None:
         #    for contact in self.contacts:
         #        print(contact, end=" ", flush=True)
