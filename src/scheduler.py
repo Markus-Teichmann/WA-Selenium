@@ -46,7 +46,3 @@ class Scheduler:
         self.messenger.set_message(Message())
         self.messenger.set_file(File())
         logger.log('Message sent')
-
-
-
-

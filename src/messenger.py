@@ -1,7 +1,3 @@
-from typing import Callable
-
-from selenium.common import TimeoutException
-
 from .models.file import File
 from .models.message import Message
 from .models.date import Date
@@ -10,7 +6,6 @@ from .reader import CSVReader
 
 import time
 import os
-
 
 class Messenger:
     def __init__(self):
@@ -72,10 +67,6 @@ class Messenger:
     def select_date(self):
         self.date.select_date()
 
-    # Diese Methode soll prüfen, ob alles Notwendige da ist, also
-    # Nachricht, Kontakte, Datei und Uhrzeit
-    # Und soll das dann in eine passende JOBS CSV schreiben.
-    # Danach wird alles wieder auf die Anfangswerte gesetzt.
     def schedule_message(self):
         self.select_date()
         date = self.date.serialize()
@@ -104,40 +95,7 @@ class Messenger:
                     file.write(json)
                 else:
                     file.write('\n' + json)
-        #self.contacts = None
-        #self.file = File()
-        #self.message = Message()
-        #self.date = Date()
 
     def send_message(self, mode='stdout'):
         if not self.message is None and not self.contacts is None:
             driver.send_message_thread_safe(self.contacts, self.message, self.file, mode)
-        #if not self.message is None:
-        #    for contact in self.contacts:
-        #        print(contact, end=" ", flush=True)
-        #        self.message.insert_receiver(contact)
-        #        try:
-        #            self.driver.openChat(contact)
-        #        except TimeoutException as exception:
-        #            print("X (NoWhatsApp)")
-        #            continue
-        #        except Exception as exception:
-        #            print(str(exception))
-        #            break
-        #        else:
-        #            try:
-        #                if self.file.get_path() is not None:
-        #                    self.driver.send_file(self.file)
-        #                    self.driver.writeDescription(self.message)
-        #                else:
-        #                    self.driver.writeMessage(self.message)
-        #                print("\U0001F44D")
-        #                time.sleep(2)
-        #            except Exception as exception:
-        #                print(str(exception))
-        #                break
-        #    self.file.reset()
-        #    self.display("Done")
-
-    #def test_driver(self):
-    #    driver.test()

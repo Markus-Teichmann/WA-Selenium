@@ -133,21 +133,24 @@ class Driver:
             description_field.send_keys(Keys.ENTER)
 
     def __send_message(self, contacts: List[Contact], message: Message, file: File, mode: str):
+        loging_message = ''
         for contact in contacts:
             if mode == 'stdout':
                 print(contact, end=" ", flush=True)
-            if mode == 'logger':
-                logger.log('to: ' + str(contact))
             message.insert_receiver(contact)
             try:
                 self.__open_chat(contact)
             except TimeoutException as exception:
                 if mode == 'stdout':
                     print("X (NoWhatsApp)")
+                if mode == 'logger':
+                    loging_message = str(contact) + 'X (NoWhatsApp)'
                 continue
             except Exception as exception:
                 if mode == 'stdout':
                     print(str(exception))
+                if mode == 'logger':
+                    logger.log('ERROR: ' + str(exception))
                 break
             else:
                 try:
@@ -158,11 +161,17 @@ class Driver:
                         self.__write_message(message)
                     if mode == 'stdout':
                         print("\U0001F44D")
+                    if mode == 'logger':
+                        loging_message = str(contact) + '\U0001F44D'
                     time.sleep(2)
                 except Exception as exception:
                     if mode == 'stdout':
                         print(str(exception))
+                    if mode == 'logger':
+                        logger.log('ERROR: ' + str(exception))
                     break
+            if mode == 'logger' and loging_message != '':
+                logger.log(loging_message)
         file.reset()
 
     def __thread_safe(self, function: Callable):
@@ -189,16 +198,5 @@ class Driver:
     def close(self):
         logger.log('Shutting down')
         self.__wait_for(lambda: self.driver.quit())
-
-    #def test(self):
-    #    if self.is_busy:
-    #        print("Driver is busy try again later.")
-    #        time.sleep(1)
-    #    else:
-    #        self.is_busy = True
-    #        print("Driver runs")
-    #        time.sleep(10)
-    #        print("Driver finishes")
-    #        self.is_busy = False
 
 driver = Driver()
