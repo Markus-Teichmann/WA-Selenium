@@ -5,9 +5,14 @@
 !shell.nix
 !src/
 !src/driver.py
+!src/logger.py
 !src/menu.py
 !src/messenger.py
 !src/reader.py
+!src/scheduler.py
+!src/writer.py
 !src/models/contact.py
+!src/models/date.py
 !src/models/file.py
+!src/models/job.py
 !src/models/message.py
