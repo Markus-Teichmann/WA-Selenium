@@ -17,7 +17,7 @@ class Scheduler:
         logger.clear_log()
         logger.log('Hello from Scheduler')
         while True:
-            time.sleep(10)
+            time.sleep(60)
             logger.log('Searching for due Jobs')
             job = self.find_job()
             if job:
