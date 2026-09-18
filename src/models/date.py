@@ -81,6 +81,3 @@ class Date:
             'hour' in json and
             'minute' in json):
             return Date(json['year'], json['month'], json['day'], json['hour'], json['minute'])
-
-
-# A Comment to commit

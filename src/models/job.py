@@ -12,6 +12,3 @@ class Job:
         self.message: Message = message
         self.contacts: List[Contact] = contacts
         self.file: File = file
-
-
-# A Comment to commit
