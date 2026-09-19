@@ -15,7 +15,7 @@ class Scheduler:
 
     def start(self):
         logger.clear_log()
-        logger.log('Hello from Scheduler')
+        logger.log('Starting Scheduler')
         while True:
             time.sleep(60)
             logger.log('Searching for due Jobs')

@@ -133,7 +133,6 @@ class Driver:
             description_field.send_keys(Keys.ENTER)
 
     def __send_message(self, contacts: List[Contact], message: Message, file: File, mode: str):
-        loging_message = ''
         for contact in contacts:
             if mode == 'stdout':
                 print(contact, end=" ", flush=True)
@@ -144,7 +143,8 @@ class Driver:
                 if mode == 'stdout':
                     print("X (NoWhatsApp)")
                 if mode == 'logger':
-                    loging_message = str(contact) + 'X (NoWhatsApp)'
+                    logger.log(str(contact) + ' - [NoWhatsApp]')
+                self.driver.get("https://web.whatsapp.com")
                 continue
             except Exception as exception:
                 if mode == 'stdout':
@@ -162,7 +162,7 @@ class Driver:
                     if mode == 'stdout':
                         print("\U0001F44D")
                     if mode == 'logger':
-                        loging_message = str(contact) + '\U0001F44D'
+                        logger.log(str(contact) + ' - [OK]')
                     time.sleep(2)
                 except Exception as exception:
                     if mode == 'stdout':
@@ -170,8 +170,6 @@ class Driver:
                     if mode == 'logger':
                         logger.log('ERROR: ' + str(exception))
                     break
-            if mode == 'logger' and loging_message != '':
-                logger.log(loging_message)
         file.reset()
 
     def __thread_safe(self, function: Callable):
